@@ -1,0 +1,42 @@
+.about {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    flex-grow: 1;
+    height: 88vh;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+.manual {
+    height: 75vh;
+    width: 85vw;
+    background-color: #365E82;
+    border-radius: 4px;
+    box-sizing: border-box;
+    padding: 14px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+}
+
+.manual::-webkit-scrollbar {
+    width: 10px;
+    /* Width of the scrollbar */
+}
+/* 
+.manual::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    /* Color of the track 
+} */
+
+.manual::-webkit-scrollbar-thumb {
+    background: #2C5274;
+    border-radius: 10px;
+    /* Color of the thumb */
+}
+
