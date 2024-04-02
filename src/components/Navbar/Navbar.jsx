@@ -1,5 +1,5 @@
 // src/Navbar.jsx
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import styles from './Navbar.module.css'
@@ -8,9 +8,42 @@ import { FaDatabase } from "react-icons/fa";
 import { LuDroplets } from "react-icons/lu";
 import { RiSignalTowerFill } from "react-icons/ri";
 import { FiDatabase } from "react-icons/fi";
+import axios from 'axios';
+
+const useInterval = (callback, delay) => {
+  const savedCallback = useRef();
+
+  // Remember the latest callback.
+  useEffect(() => {
+    savedCallback.current = callback;
+  }, [callback]);
+
+  // Set up the interval.
+  useEffect(() => {
+    function tick() {
+      savedCallback.current();
+    }
+    if (delay !== null) {
+      let id = setInterval(tick, delay);
+      return () => clearInterval(id);
+    }
+  }, [delay]);
+}
 
 const Navbar = () => {
   const router = useRouter();
+  const [isConnected,setIsConnected] = useState(false);
+
+  useInterval(() => {
+    axios.get('/api/getNetStatus')
+    .then(response => {
+      setIsConnected(response.data.isConnected);
+      console.log(response.data.isConnected)
+    })
+    .catch(error => {
+      console.error('Error fetching Internet status: ', error);
+    });
+  }, 3000);
 
   const isActiveLink = (href) =>{
     return router.pathname ===href;
@@ -24,7 +57,7 @@ const Navbar = () => {
       </div>
       <div className={styles.flexGrow}>
         <div className={styles.connect}>
-          <MdOutlineSignalCellularAlt style={{ fontSize: '25' }} />
+          <MdOutlineSignalCellularAlt style={{ fontSize: '25' , color:isConnected?'#10FFD4':'white'}} />
         </div>
         <ul className={styles.selectul}>
           <li className={styles.selectli}>
