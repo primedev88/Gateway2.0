@@ -18,7 +18,7 @@ const getConnectedDevices = async (res) => {
             console.log('Connected devices: ', connectedDevices);
         }
         const jsonData = {
-            devices: connectedDevices.map(index => ({ status: 'connected' })),
+            devices: connectedDevices.map(index => ({ mac: index })),
         };
         // Send the updated connectivity status as a response
         res.json(jsonData);

@@ -1,0 +1,24 @@
+.node{
+    
+    height: 24vh;
+    width: 16vw;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #58FF69;
+    color: #03334E;
+    margin: 2vh 1vw;
+}
+
+.svg{
+    height: 15vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.mac{
+    font-size: 14px;
+}

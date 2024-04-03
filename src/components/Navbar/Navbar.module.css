@@ -61,7 +61,7 @@
     width: 8vh;
     border-radius: 6px;
     background-color: #2C5274;
-    color: white;
+    
 }
 
 .setting2{
@@ -76,3 +76,21 @@
     background-color: #2C5274;
     color: white;
 }
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+  }
+  
+  .loader {
+      border: 4px solid rgba(0, 0, 0, 0.1);
+      border-left-color: #47e29a;
+      border-radius: 50%;
+      width: 15px;
+      height: 15px;
+      animation: rotate 1s linear infinite;
+  }

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import styles from './Navbar.module.css'
 import { MdOutlineSignalCellularAlt, MdOutlineSpaceDashboard, MdOutlineSettings } from "react-icons/md";
-import { FaDatabase } from "react-icons/fa";
+import Credential from "./Credential/Credential.jsx";
 import { LuDroplets } from "react-icons/lu";
 import { RiSignalTowerFill } from "react-icons/ri";
 import { FiDatabase } from "react-icons/fi";
@@ -32,7 +32,19 @@ const useInterval = (callback, delay) => {
 
 const Navbar = () => {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingToggle,setIsLoadingToggle] = useState(false);
+  const [isHotspotOn, setIsHotspotOn] = useState(false);
+  const [isModalOpen, setModalOpen] = useState(false);
   const [isConnected,setIsConnected] = useState(false);
+  const ip = "http://localhost:6020";
+
+  const openModal = () => {
+    setModalOpen(true);
+  };
+  const closeModal = () => {
+    setModalOpen(false);
+  };
 
   useInterval(() => {
     axios.get('/api/getNetStatus')
@@ -48,9 +60,57 @@ const Navbar = () => {
   const isActiveLink = (href) =>{
     return router.pathname ===href;
   }
-  
-  return (
 
+  const handleFormSubmit = (ssid, password) => {
+     setIsLoading(true);
+
+      axios.post(`${ip}/api/update-credentials`, {
+        ssid: ssid,
+        password: password
+      }, {
+          headers: {
+              "Content-Type": "application/json"
+          }
+      })
+      .then((response) => {
+        console.log("Success:", response.data);
+        if(response.data.result){
+          setIsHotspotOn(!isHotspotOn)
+        }
+        setModalOpen(false);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      })
+      .finally(() => {
+        // Reset loading state to false when request is completed (whether success or failure)
+        setIsLoading(false);
+      });
+  };
+  const toggleHotspot = () => {
+    setIsLoadingToggle(true);
+    axios.post(`${ip}/api/toggle-hotspot`,{
+      isHotspotOn: !isHotspotOn
+    },{
+      headers: {
+        "Content-Type": "application/json",
+      }
+    })
+    .then((response)=>{
+      console.log("Success:", response.data);
+      if(response.data.result){
+        setIsHotspotOn(!isHotspotOn);
+      }
+    })
+    .catch((error) => {
+      console.error("Error", error);
+    }).finally(()=>{
+      setIsLoadingToggle(false);
+    });
+  };
+
+  return (
+    <>
     <nav className={styles.navbar}>
       <div >
         <img src="/static/favicon.ico" alt="Logo" />
@@ -88,14 +148,21 @@ const Navbar = () => {
         </ul>
       </div>
       <div className={styles.setting}>
-        <div className={styles.hotspot}>
-          <RiSignalTowerFill style={{ fontSize: '23' }} />
+        <div className={styles.hotspot} onClick={toggleHotspot} disable={isLoadingToggle.toString()}>
+          {isLoadingToggle? <div className={styles.loader} /> :
+          <RiSignalTowerFill style={{ fontSize: '23' ,color:isHotspotOn? '#10FFD4':'#D6F8FF'}} />
+          }
+          
         </div>
-        <div className={styles.setting2}>
+        <div className={styles.setting2} onClick={openModal} >
           <MdOutlineSettings style={{ fontSize: '24' }} />
         </div>
       </div>
     </nav>
+    {isModalOpen && (
+        <Credential closeModal={closeModal} handleSubmit={handleFormSubmit} isLoading={isLoading}/>
+      )}
+    </>
   );
 };
 
