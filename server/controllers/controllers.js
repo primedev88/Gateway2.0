@@ -2,7 +2,8 @@ const { handleCheckNet } = require('../services/netStatus')
 const { handleWifiDevices } = require('../services/wifiDevices')
 const { handleSubmit } = require('../services/upCredential')
 const { handleToggle } = require('../services/toggle')
-const {handleLoraDevices} = require('../service/getLora')
+const { handleLoraDevices } = require('../services/getLora')
+const { handleStream } =require('../services/stream')
 
 
 const getNetStatus = (req,res) => {
@@ -25,10 +26,15 @@ const toggleHotspot = (req,res) => {
     return handleToggle(req,res);
 }
 
+const toggleStream = (req,res) => {
+    return handleStream(req,res);
+}
+
 module.exports = {
     getNetStatus,
     getWifiDevices,
     getLoraDevices,
     updateCredentials,
-    toggleHotspot 
+    toggleHotspot,
+    toggleStream 
 }

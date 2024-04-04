@@ -1,4 +1,4 @@
-const { getNetStatus,getWifiDevices,updateCredentials,toggleHotspot,getLoraDevices } = require("../controllers/controllers")
+const { getNetStatus,getWifiDevices,updateCredentials,toggleHotspot,getLoraDevices,toggleStream } = require("../controllers/controllers")
 
 module.exports = (server) => {
     server.get('/api/getNetStatus',getNetStatus)
@@ -10,5 +10,7 @@ module.exports = (server) => {
     server.post('/api/update-credentials', updateCredentials)
 
     server.post('/api/toggle-hotspot', toggleHotspot)
+
+    server.post('/api/stream',toggleStream)
     
 }

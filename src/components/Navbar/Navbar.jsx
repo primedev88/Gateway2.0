@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import styles from './Navbar.module.css'
-import { MdOutlineSignalCellularAlt, MdOutlineSpaceDashboard, MdOutlineSettings } from "react-icons/md";
+import { MdOutlinePhotoCamera,MdOutlineSignalCellularAlt, MdOutlineSpaceDashboard, MdOutlineSettings } from "react-icons/md";
 import Credential from "./Credential/Credential.jsx";
 import { LuDroplets } from "react-icons/lu";
 import { RiSignalTowerFill } from "react-icons/ri";
@@ -141,6 +141,14 @@ const Navbar = () => {
               <a className={styles.link} >
                 <LuDroplets style={{ fontSize: '24', marginTop: '3vh' ,color:isActiveLink('/about')? '#60F9A6':'white' }} />
                 <div style={{ width: '100%', background:  isActiveLink('/about')? '#60F9A6':'#03334E', height: '1vh', marginTop: '1.5vh', borderRadius: '4px' }}></div>
+              </a>
+            </Link>
+          </li>
+          <li className={styles.selectli} >
+            <Link legacyBehavior href="/stream">
+              <a className={styles.link} >
+                <MdOutlinePhotoCamera style={{ fontSize: '24', marginTop: '3vh' ,color:isActiveLink('/stream')? '#60F9A6':'white' }} />
+                <div style={{ width: '100%', background:  isActiveLink('/stream')? '#60F9A6':'#03334E', height: '1vh', marginTop: '1.5vh', borderRadius: '4px' }}></div>
               </a>
             </Link>
           </li>

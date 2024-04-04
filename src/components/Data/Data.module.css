@@ -12,15 +12,48 @@
     font-family: 'Inter', sans-serif;
     
 }
-
-.table{
-    box-sizing: border-box;
-    padding: 2vh;
+.tablecontainer{
+    border-radius: 4px;
+    overflow-y: auto;
+    background-color: #2C5274;
     height: 71vh;
+}
+.table{
+    padding: 2vh;
+    box-sizing: border-box;
+    max-height: 71vh;
     width: 90vw;
     background-color: #2C5274;
-    border-radius: 4px;
+    
     color: white;
+    border-collapse: collapse;
+    
+}
+.head{
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    height: 10vh;
+    background-color: #2C5274;
+}
+.row{
+    height: 10vh;
+}
+
+.id{
+    text-align: center;
+}
+.timestamp{
+    text-align: center;
+}
+.temperature{
+    text-align: center;
+}
+.humidity{
+    text-align: center;
+}
+.lightIntensity{
+    text-align: center;
 }
 
 .export{

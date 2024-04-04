@@ -66,7 +66,7 @@ function Credential(props) {
           </div>
         </div>
 
-        <div className={styles.Submit} onClick={handleFormSubmit} disabled={isLoading}>
+        <div className={styles.Submit} onClick={handleFormSubmit} disabled={isLoading.toString()}>
           {isLoading ? <div className={styles.loader} /> : 'Submit'}
         </div>
       </div>

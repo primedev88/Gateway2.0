@@ -39,6 +39,17 @@ const Home = () => {
         console.error('Error fetching Internet status: ', error);
       });
   }, 3000);
+
+  useInterval(() => {
+    axios.get('/api/getLoraDevices')
+    .then(response=>{
+      setLoraStatus(response.data);
+      console.log(response.data);
+    })
+    .catch(error => {
+      console.error('Error fetching Internet status: ', error);
+    });
+  },3000)
   return (
     <div className={styles.home}>
       <div className={styles.wifibody}>
@@ -59,10 +70,10 @@ const Home = () => {
           Lora Nodes : 0
         </div>
         <div className={styles.loradevice}>
-          {/* Try connecting a device */}
-          <Lora id="01"/>
+          Try connecting a device
+          {/* <Lora id="01"/>
           <Lora id="02"/>
-          
+           */}
 
         </div>
       </div>
