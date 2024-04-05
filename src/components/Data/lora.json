@@ -13,69 +13,6 @@
             "temperature":"24",
             "humidity":"78",
             "lightIntensity":"22"
-        },
-        {
-            "id":"01",
-            "timestamp":"00:01:15:875",
-            "temperature":"24",
-            "humidity":"78",
-            "lightIntensity":"22"
-        },
-        {
-            "id":"01",
-            "timestamp":"00:01:15:875",
-            "temperature":"24",
-            "humidity":"78",
-            "lightIntensity":"22"
-        },
-        {
-            "id":"01",
-            "timestamp":"00:01:15:875",
-            "temperature":"24",
-            "humidity":"78",
-            "lightIntensity":"22"
-        },
-        {
-            "id":"01",
-            "timestamp":"00:01:15:875",
-            "temperature":"24",
-            "humidity":"78",
-            "lightIntensity":"22"
-        },
-        {
-            "id":"01",
-            "timestamp":"00:01:15:875",
-            "temperature":"24",
-            "humidity":"78",
-            "lightIntensity":"22"
-        },
-        {
-            "id":"01",
-            "timestamp":"00:01:15:875",
-            "temperature":"24",
-            "humidity":"78",
-            "lightIntensity":"22"
-        },
-        {
-            "id":"01",
-            "timestamp":"00:01:15:875",
-            "temperature":"24",
-            "humidity":"78",
-            "lightIntensity":"22"
-        },
-        {
-            "id":"01",
-            "timestamp":"00:01:15:875",
-            "temperature":"24",
-            "humidity":"78",
-            "lightIntensity":"22"
-        },
-        {
-            "id":"01",
-            "timestamp":"00:01:15:875",
-            "temperature":"24",
-            "humidity":"78",
-            "lightIntensity":"22"
         }
     ]
 }

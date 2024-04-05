@@ -71,9 +71,11 @@ const Home = () => {
         </div>
         <div className={styles.loradevice}>
           Try connecting a device
-          {/* <Lora id="01"/>
-          <Lora id="02"/>
-           */}
+          {loraStatus.devices?.length === 0 ? 'Try connecting a device' :
+            loraStatus.devices?.map((device, index) => (
+              <Lora key={index} id={device.id} />
+            ))
+          }
 
         </div>
       </div>

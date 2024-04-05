@@ -13,6 +13,7 @@ const Data = () => {
     .then(response=>{
       setLoraData(prevEntries => {
         const updatedEntries = [response.data.devices, ...prevEntries.slice(0, 24)]; // Keep maximum 25 entries
+        console.log("16 ",updatedEntries)
         return updatedEntries;
       });
       
