@@ -1,9 +1,31 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from './Data.module.css';
 import { FiDownload } from "react-icons/fi";
 import '@fontsource/inter'; // Import Inter font
 // import data from './lora.json'; // Assuming lora.json is in the same directory
 import * as XLSX from 'xlsx';
+import axios from 'axios';
+
+
+const useInterval = (callback, delay) => {
+  const savedCallback = useRef();
+
+  // Remember the latest callback.
+  useEffect(() => {
+    savedCallback.current = callback;
+  }, [callback]);
+
+  // Set up the interval.
+  useEffect(() => {
+    function tick() {
+      savedCallback.current();
+    }
+    if (delay !== null) {
+      let id = setInterval(tick, delay);
+      return () => clearInterval(id);
+    }
+  }, [delay]);
+}
 
 const Data = () => {
   const [loraData, setLoraData] = useState([]);
