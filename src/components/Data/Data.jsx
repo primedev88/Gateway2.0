@@ -11,8 +11,12 @@ const Data = () => {
   useInterval(() => {
     axios.get('/api/getLoraDevices')
     .then(response=>{
-      setLoraData(response.data);
-      console.log(response.data);
+      setLoraData(prevEntries => {
+        const updatedEntries = [response.data.devices, ...prevEntries.slice(0, 24)]; // Keep maximum 25 entries
+        return updatedEntries;
+      });
+      
+      console.log(response.data.devices);
     })
     .catch(error => {
       console.error('Error fetching Internet status: ', error);
@@ -27,7 +31,7 @@ const Data = () => {
   };
   return (
     <div className={styles.data}>
-      {loraData.devices?.length > 0 ? (
+      {loraData?.length > 0 ? (
         <div className={styles.tablecontainer}>
           <table className={styles.table}>
             <thead className={styles.head}>
@@ -40,7 +44,7 @@ const Data = () => {
               </tr>
             </thead>
             <tbody>
-              {loraData.devices?.map((device, index) => (
+              {loraData?.map((device, index) => (
                 <tr className={styles.row} key={device.id} style={{ backgroundColor: index % 2 == 0 ? '#365E82' : '#2C5274' }}>
                   <td className={styles.id}>{device.id}</td>
                   <td className={styles.timestamp}>{device.timestamp}</td>
