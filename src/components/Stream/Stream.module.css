@@ -27,10 +27,14 @@
 }
 
 .streamWindow{
-    height: 60vh;
-    width: 50vw;
+    height: 65vh;
+    width: 55vw;
     background-color: #2C5274;
     border-radius: 4px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 @keyframes rotate {
 0% {

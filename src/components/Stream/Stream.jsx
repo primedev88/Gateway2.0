@@ -5,17 +5,36 @@ import axios from 'axios';
 const Stream = () => {
     const [stream, setStream] = useState(false);
     const [isLoadingStream, setIsLoadingStream] = useState(false);
-    const streamURL = 'http://localhost:8084/?action=stream';
-
+   
     const handleStream = () => {
-        setIsLoadingStream(true);
-        axios.post('/api/stream', {
-            stream: !stream
-        }, {
-            headers: {
-                "Content-Type": "application/json",
-            }
-        })
+        if(!stream){
+            setStream(true);
+            axios.post('/api/startStream', {
+                stream: true
+            }, {
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            })
+            .then((response) => {
+                console.log("Success:", response.data);
+                if (response.data.result) {
+                    
+                }
+            })
+            .catch((error) => {
+                console.error("Error", error);
+            });
+            
+        }
+        else{
+            axios.post('/api/endStream', {
+                stream: !stream
+            }, {
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            })
             .then((response) => {
                 console.log("Success:", response.data);
                 if (response.data.result) {
@@ -27,7 +46,7 @@ const Stream = () => {
             }).finally(() => {
                 setIsLoadingStream(false);
             });
-
+        }
     }
     return (
         <div className={styles.stream}>
@@ -38,12 +57,7 @@ const Stream = () => {
             </div>
             <div className={styles.streamWindow}>
                 {stream && (
-                    <iframe
-                        title="stream"
-                        className={styles.streamOn}
-                        src={streamURL}
-                        // frameBorder="0"
-                    />
+                    <img style={{display:'block',margin:'auto'}} src="http://localhost:8084/?action=stream" width="440" height="250"/>
                 )}
             </div>
         </div>
