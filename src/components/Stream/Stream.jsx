@@ -7,7 +7,7 @@ const Stream = () => {
     const [isLoadingStream, setIsLoadingStream] = useState(false);
    
     const handleStream = () => {
-        if(!stream){
+        if (!stream) {
             setStream(true);
             axios.post('/api/startStream', {
                 stream: true
@@ -26,8 +26,7 @@ const Stream = () => {
                 console.error("Error", error);
             });
             
-        }
-        else{
+        } else {
             axios.post('/api/endStream', {
                 stream: !stream
             }, {
@@ -48,6 +47,12 @@ const Stream = () => {
             });
         }
     }
+
+    // Function to generate a random string for cache busting
+    const generateCacheBustingParam = () => {
+        return `?cache=${Math.random().toString(36).substring(7)}`;
+    }
+
     return (
         <div className={styles.stream}>
             <div className={styles.button} onClick={handleStream} disable={isLoadingStream.toString()}>
@@ -57,7 +62,7 @@ const Stream = () => {
             </div>
             <div className={styles.streamWindow}>
                 {stream && (
-                    <img style={{display:'block',margin:'auto'}} src="http://localhost:8084/?action=stream" width="440" height="250"/>
+                    <img style={{display:'block',margin:'auto'}} src={`http://localhost:8084/?action=stream${generateCacheBustingParam()}`} width="440" height="250"/>
                 )}
             </div>
         </div>

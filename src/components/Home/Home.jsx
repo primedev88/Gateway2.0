@@ -67,16 +67,14 @@ const Home = () => {
       </div>
       <div className={styles.lorabody}>
         <div className={styles.loracount}>
-          Lora Nodes : 0
+          Lora Nodes : {loraStatus.devices?.length}
         </div>
         <div className={styles.loradevice}>
-          Try connecting a device
           {loraStatus.devices?.length === 0 ? 'Try connecting a device' :
             loraStatus.devices?.map((device, index) => (
               <Lora key={index} id={device.id} />
             ))
           }
-
         </div>
       </div>
     </div>
