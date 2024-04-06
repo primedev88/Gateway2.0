@@ -52,7 +52,7 @@ class LoRaRcvCont(LoRa):
     def on_rx_done(self):
         self.clear_irq_flags(RxDone=1)
         payload = self.read_payload(nocheck=True)
-        data = payload.decode("utf-8", 'ignore')
+        data = bytes(payload).decode("utf-8", 'ignore')
         print("\nReceived:", data)
 
         node_id = data[:2]
