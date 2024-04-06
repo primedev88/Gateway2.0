@@ -89,12 +89,18 @@ class LoRaRcvCont(LoRa):
         self.node_times[int(node_id) - 1] = time()
 
         # Remove disconnected devices
+        # Remove disconnected devices
         current_time = time()
         for node_id, node_time in enumerate(self.node_times, start=1):
             if current_time - node_time > 5 and self.connected.get(node_id):
                 self.connectedDevices -= 1
                 del self.connected[node_id]
-                self.lora_data["devices"] = [device for device in self.lora_data["devices"] if device["id"] != str(node_id).zfill(2)]
+                # Remove the device data from lora_data
+                for i, device in enumerate(self.lora_data["devices"]):
+                    if device["id"] == str(node_id).zfill(2):
+                        del self.lora_data["devices"][i]
+                        break  # Exit loop after removing the device
+
 
         self.set_mode(MODE.SLEEP)
         self.reset_ptr_rx()
