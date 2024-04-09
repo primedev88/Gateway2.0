@@ -64,14 +64,14 @@ class LoRaRcvCont(LoRa):
         print("Temperature:", temp)
         print("Humidity:", humidity)
         print("Light Intensity:", light_intensity)
-
+        receiveTime = time.time()
         existing_device = next((device for device in self.lora_data["devices"] if device["id"] == node_id), None)
 
         if existing_device:
             # Update existing device data
             existing_device.update({
                 "id": node_id,
-                "timestamp": str(time()),
+                "timestamp": str(receiveTime),
                 "temperature": temp,
                 "humidity": humidity,
                 "lightIntensity": light_intensity
@@ -80,24 +80,23 @@ class LoRaRcvCont(LoRa):
             # Add new device data
             self.lora_data["devices"].append({
                 "id": node_id,
-                "timestamp": str(time()),
+                "timestamp": str(receiveTime),
                 "temperature": temp,
                 "humidity": humidity,
                 "lightIntensity": light_intensity
             })
 
-        self.node_times[int(node_id) - 1] = time()
+        self.node_times[int(node_id) - 1] = receiveTime
 
         # Remove disconnected devices
-        # Remove disconnected devices
-        current_time = time()
+        current_time = time.time()
         for node_id, node_time in enumerate(self.node_times, start=1):
             if current_time - node_time > 5 and self.connected.get(node_id):
                 self.connectedDevices -= 1
                 del self.connected[node_id]
                 # Remove the device data from lora_data
                 for i, device in enumerate(self.lora_data["devices"]):
-                    if device["id"] == str(node_id).zfill(2):
+                    if device["id"] == str(node_id):
                         del self.lora_data["devices"][i]
                         break  # Exit loop after removing the device
 
