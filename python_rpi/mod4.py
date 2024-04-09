@@ -35,15 +35,15 @@ class LoRaRcvCont(LoRa):
         self.reset_ptr_rx()
         self.set_mode(MODE.RXCONT)
         while True:
-            current_time = time()
+            current_time = time.time()
             for node_id, node_time in enumerate(self.node_times, start=1):
                 if current_time - node_time > 5 and self.connected.get(node_id):
                     self.connectedDevices -= 1
                     del self.connected[node_id]
-                    self.lora_data["devices"] = [device for device in self.lora_data["devices"] if device["id"] != str(node_id).zfill(2)]
+                    self.lora_data["devices"] = [device for device in self.lora_data["devices"] if device["id"] != str(node_id)]
 
             self.send_data_to_udp()
-            sleep(0.5)
+            sleep(2)
 
     def send_data_to_udp(self):
         json_data = json.dumps(self.lora_data).encode('utf-8')
@@ -59,8 +59,13 @@ class LoRaRcvCont(LoRa):
         temp = data[2:7]
         humidity = data[7:12]
         light_intensity = data[12:18]
+        
+        if not node_id.isdigit():
+            print("Invalid node_id:", node_id)
+            return  # Skip processing invalid node_id
 
-        print("Node_ID:", node_id, type(node_id))
+    
+        print("Node_ID:", node_id)
         print("Temperature:", temp)
         print("Humidity:", humidity)
         print("Light Intensity:", light_intensity)
