@@ -1,230 +1,118 @@
-from time import sleep
-import time as tm
+from time import sleep, time
 import json
+import socket
 from SX127x.LoRa import *
 from SX127x.board_config import BOARD
-from firebase import firebase 
-import collections
-from collections import abc
-collections.MutableMapping = abc.MutableMapping
 from pyrebase import pyrebase
-import socket
 
 UDP_IP = "127.0.0.54"
-UDP_PORT= 8000
+UDP_PORT = 8000
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 config = {
-  "apiKey": "ObjdFhG0sNikafsOsUW370Xw6dQgq0pXmsw0BYLF",
-  "authDomain": "mantiswavelora.firebaseapp.com",
-  "databaseURL": "https://mantiswavelora-default-rtdb.firebaseio.com",
-  "storageBucket": "mantiswavelora.appspot.com"
+    "apiKey": "ObjdFhG0sNikafsOsUW370Xw6dQgq0pXmsw0BYLF",
+    "authDomain": "mantiswavelora.firebaseapp.com",
+    "databaseURL": "https://mantiswavelora-default-rtdb.firebaseio.com",
+    "storageBucket": "mantiswavelora.appspot.com"
 }
 firebase = pyrebase.initialize_app(config)
-#firebase.initializeApp(con);
 db = firebase.database()
 BOARD.setup()
 
 
 class LoRaRcvCont(LoRa):
 
-    def _init_(self, verbose=False):
-        super(LoRaRcvCont, self)._init_(verbose)
+    def __init__(self, verbose=False):
+        super(LoRaRcvCont, self).__init__(verbose)
         self.set_mode(MODE.SLEEP)
         self.set_dio_mapping([0] * 6)
-        Available_nodes= []
+        self.lora_data = {"devices": []}
+        self.node_timestamps = {}  # Map to store node_id and last update timestamp
+
     def start(self):
         self.reset_ptr_rx()
         self.set_mode(MODE.RXCONT)
-        self.connectedDevices = 0
-        self.connected_1 = 0
-        self.connected_2 = 0
-        self.connected_3 = 0
-        self.connected_4 = 0
-        self.connected_5 = 0
-        self.connected_6 = 0
-        self.connected_7 = 0
-        self.connected_8 = 0
-        self.time_1 = 1704538252.933027
-        self.time_2 = 1704538252.933027
-        self.time_3 = 1704538252.933027
-        self.time_4 = 1704538252.933027
-        self.time_5 = 1704538252.933027
-        self.time_6 = 1704538252.933027
-        self.time_7 = 1704538252.933027
-        self.time_8 = 1704538252.933027
-        self.time_f = 1704538252.933027
-        self.lora_data ={}
-        self.lora_data["sensor_id"]= [1,2,3,4,5,6,7,8]
-        print("Line 58: ", self.lora_data)  
         while True:
-            sleep(0.5)
-            rssi_value = self.get_rssi_value()
-            status = self.get_modem_status()
-            sys.stdout.flush()
-            if (tm.time() - self.time_f) > 5:
-            	self.lora_data["sensor_id"]= [1,2,3,4,5,6,7,8]
-                self.connectedDevices = 0
-                self.connected_1 = 0
-                self.connected_2 = 0
-                self.connected_3 = 0
-                self.connected_4 = 0
-                self.connected_5 = 0
-                self.connected_6 = 0
-                self.connected_7 = 0
-                self.connected_8 = 0
-            print("Line No 66: ",self.lora_data)
-            json_data = json.dumps(self.lora_data).encode('utf-8')
-            sock.sendto(json_data, (UDP_IP, UDP_PORT))
-    def on_rx_done(self):
-        print ("\nReceived: ")
-        self.clear_irq_flags(RxDone=1)
-        payload = self.read_payload(nocheck=True)
-        #print (bytes(payload).decode("utf-8",'ignore'))
-        data = bytes(payload).decode("utf-8",'ignore')
-        print (data)
-        node_id= (data[0:2])
-        temp = (data[2:7])
-        humidity = (data[7:12])
-        light_intensity = (data[12:18])
-        #node_id = (data[0:2])
-        #temp = "43"
-        #humidity = "78"
-        print("Node_ID:")
-        print(node_id, type(node_id))
-        print ("Temperature:")
-        print (temp)
-        print ("Humidity:")
-        print (humidity)
-        print ("Light Intensity:")
-        print (light_intensity)
-        if node_id == "01":			
-            print("Line_69")
-            self.time_1= tm.time()
-            print("At 82 LORA=")
-            if self.connected_1==0:
-                self.lora_data["sensor_id"].append("01")
-                self.lora_data["sensor_id"].remove(1) 
-                #print(self.lora_data)
-                self.connectedDevices +=1 
-                self.connected_1 = 1 
-        if node_id == "02":
-            self.time_2= tm.time()
-            if self.connected_2==0:
-                self.lora_data["sensor_id"].append("02")
-                self.lora_data["sensor_id"].remove(2) 
-                #print(self.lora_data)
-                self.connectedDevices +=1
-                self.connected_2 = 1
-        if node_id == "03":
-            self.time_3= tm.time()
-            if self.connected_3==0:
-                self.lora_data["sensor_id"].append("03")
-                self.lora_data["sensor_id"].remove(3)             
-                self.connectedDevices +=1
-                self.connected_3 = 1
-        if node_id == "04":
-            self.time_4= tm.time()
-            if self.connected_4==0:
-                self.lora_data["sensor_id"].append("04")
-                self.lora_data["sensor_id"].remove(4)             
-                self.connectedDevices +=1 
-                self.connected_4 = 1 
-        if node_id == "05":
-            self.time_5= tm.time()
-            if self.connected_5==0:
-                self.lora_data["sensor_id"].append("05")
-                self.lora_data["sensor_id"].remove(5)             
-                self.connectedDevices +=1
-                self.connected_5 = 1
-        if node_id == "06":
-            self.time_6= tm.time()
-            if self.connected_6==0:
-                self.lora_data["sensor_id"].append("06")
-                self.lora_data["sensor_id"].remove(6)             
-                self.connectedDevices +=1
-                self.connected_6 = 1
-        if node_id == "07":
-            self.time_7= tm.time()
-            if self.connected_7==0:
-                self.lora_data["sensor_id"].append("07")
-                self.lora_data["sensor_id"].remove(7)             
-                self.connectedDevices +=1
-                self.connected_7 = 1
-        if node_id == "08":
-            self.time_8= tm.time()
-            if self.connected_8==0:
-                self.lora_data["sensor_id"].append("08")
-                self.lora_data["sensor_id"].remove(8)             
-                self.connectedDevices +=1
-                self.connected_8 = 1
-        self.time_f = tm.time()
-        if(self.time_f - self.time_1)> 5 and self.connected_1 == 1:
-            self.lora_data["sensor_id"].remove("01")
-            self.lora_data["sensor_id"].append(1)        
-            self.connected_1 = 0
-            self.connectedDevices -=1
-        if(self.time_f - self.time_2)> 5 and self.connected_2 == 1:
-            self.lora_data["sensor_id"].remove("02")
-            self.lora_data["sensor_id"].append(2)
-            self.connected_2 = 0
-            self.connectedDevices -=1
-        if(self.time_f - self.time_3)> 5 and self.connected_3 == 1:
-            self.lora_data["sensor_id"].remove("03")
-            self.lora_data["sensor_id"].append(3)        
-            self.connected_3 = 0
-            self.connectedDevices -=1
-        if(self.time_f - self.time_4)> 5 and self.connected_4 == 1:
-            self.lora_data["sensor_id"].remove("04")
-            self.lora_data["sensor_id"].append(4)        
-            self.connected_4 = 0
-            self.connectedDevices -=1
-        if(self.time_f - self.time_5)> 5 and self.connected_5 == 1:
-            self.lora_data["sensor_id"].remove("05")
-            self.lora_data["sensor_id"].append(5)
-            self.connected_5 = 0
-            self.connectedDevices -=1
-        if(self.time_f - self.time_6)> 5 and self.connected_6 == 1:
-            self.lora_data["sensor_id"].remove("06")
-            self.lora_data["sensor_id"].append(6)        
-            self.connected_6 = 0
-            self.connectedDevices -=1
-        if(self.time_f - self.time_7)> 5 and self.connected_7 == 1:
-            self.lora_data["sensor_id"].remove("07")
-            self.lora_data["sensor_id"].append(7)        
-            self.connected_7 = 0
-            self.connectedDevices -=1
-        if(self.time_f - self.time_8)> 5 and self.connected_8 == 1:
-            self.lora_data["sensor_id"].remove("08")
-            self.lora_data["sensor_id"].append(8)        
-            self.connected_8 = 0
-            self.connectedDevices -=1
-      
-        data = {
-                "Temperature": temp,
-                "Humidity": humidity,
-                "Light Intensity": light_intensity,
- 	    }
-        print("Line 172: ", self.lora_data)
+            self.remove_inactive_nodes()
+            self.send_data_to_udp()
+            sleep(1)
+
+    def send_data_to_udp(self):
         json_data = json.dumps(self.lora_data).encode('utf-8')
         sock.sendto(json_data, (UDP_IP, UDP_PORT))
-        db.child("raspi").child("1-set").set(data)
-        db.child("raspi").child("2-push").push(data)
+
+    def on_rx_done(self):
+        self.clear_irq_flags(RxDone=1)
+        payload = self.read_payload(nocheck=True)
+        data = bytes(payload).decode("utf-8", 'ignore')
+        print("\nReceived:", data)
+
+        node_id = data[:2]
+        temp = data[2:7]
+        humidity = data[7:12]
+        light_intensity = data[12:18]
+        
+        if not node_id.isdigit():
+            print("Invalid node_id:", node_id)
+            return  # Skip processing invalid node_id
+
+    
+        print("Node_ID:", node_id)
+        print("Temperature:", temp)
+        print("Humidity:", humidity)
+        print("Light Intensity:", light_intensity)
+        receiveTime = time()
+
+        # Update timestamp for the node
+        self.node_timestamps[node_id] = receiveTime
+
+        existing_device = next((device for device in self.lora_data["devices"] if device["id"] == node_id), None)
+
+        if existing_device:
+            # Update existing device data
+            existing_device.update({
+                "id": node_id,
+                "timestamp": str(receiveTime),
+                "temperature": temp,
+                "humidity": humidity,
+                "lightIntensity": light_intensity
+            })
+        else:
+            # Add new device data
+            self.lora_data["devices"].append({
+                "id": node_id,
+                "timestamp": str(receiveTime),
+                "temperature": temp,
+                "humidity": humidity,
+                "lightIntensity": light_intensity
+            })
+
         self.set_mode(MODE.SLEEP)
         self.reset_ptr_rx()
         self.set_mode(MODE.RXCONT)
+
+    def remove_inactive_nodes(self):
+        current_time = time()
+        inactive_nodes = [node_id for node_id, timestamp in self.node_timestamps.items() if current_time - timestamp > 5]
+        for node_id in inactive_nodes:
+            self.remove_node_data(node_id)
+
+    def remove_node_data(self, node_id):
+        self.lora_data["devices"] = [device for device in self.lora_data["devices"] if device["id"] != node_id]
+        del self.node_timestamps[node_id]
+
+
+# Rest of the code remains the same
+
+
 lora = LoRaRcvCont(verbose=False)
 lora.set_mode(MODE.STDBY)
-#  Medium Range  Defaults after init are 434.0MHz, Bw = 125 kHz, Cr = 4/5, Sf = 128chips/symbol, CRC on 13 dBm
 lora.set_pa_config(pa_select=1)
+
 try:
     lora.start()
 except KeyboardInterrupt:
-    sys.stdout.flush()
-    print ("")
-    sys.stderr.write("KeyboardInterrupt\n")
+    print("\nKeyboardInterrupt")
 finally:
-    sys.stdout.flush()
-    print ("")
     lora.set_mode(MODE.SLEEP)
     BOARD.teardown()
