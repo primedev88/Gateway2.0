@@ -35,15 +35,9 @@ class LoRaRcvCont(LoRa):
         self.reset_ptr_rx()
         self.set_mode(MODE.RXCONT)
         while True:
-            current_time = time.time()
-            for node_id, node_time in enumerate(self.node_times, start=1):
-                if current_time - node_time > 5 and self.connected.get(node_id):
-                    self.connectedDevices -= 1
-                    del self.connected[node_id]
-                    self.lora_data["devices"] = [device for device in self.lora_data["devices"] if device["id"] != str(node_id)]
-
+            self.remove_inactive_nodes()
             self.send_data_to_udp()
-            sleep(2)
+            sleep(1)
 
     def send_data_to_udp(self):
         json_data = json.dumps(self.lora_data).encode('utf-8')
@@ -93,23 +87,20 @@ class LoRaRcvCont(LoRa):
 
         self.node_times[int(node_id) - 1] = receiveTime
 
-        # Remove disconnected devices
-        current_time = time.time()
-        for node_id, node_time in enumerate(self.node_times, start=1):
-            if current_time - node_time > 5 and self.connected.get(node_id):
-                self.connectedDevices -= 1
-                del self.connected[node_id]
-                # Remove the device data from lora_data
-                for i, device in enumerate(self.lora_data["devices"]):
-                    if device["id"] == str(node_id):
-                        del self.lora_data["devices"][i]
-                        break  # Exit loop after removing the device
-
-
         self.set_mode(MODE.SLEEP)
         self.reset_ptr_rx()
         self.set_mode(MODE.RXCONT)
 
+    def remove_inactive_nodes(self):
+        current_time = time.time()
+        inactive_nodes = [node_id for node_id, last_update_time in enumerate(self.node_times, start=1) if current_time - last_update_time > 5]
+        for node_id in inactive_nodes:
+            self.remove_node_data(node_id)
+
+    def remove_node_data(self, node_id):
+        self.lora_data["devices"] = [device for device in self.lora_data["devices"] if device["id"] != str(node_id)]
+
+# Rest of the code remains the same
 
 
 lora = LoRaRcvCont(verbose=False)
