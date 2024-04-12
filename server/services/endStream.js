@@ -4,7 +4,11 @@ const stopStreamingCommand = 'pkill -f mjpg_streamer'; // Command to kill the mj
 
 const handleEndStream = (req, res) => {
     
-    exec(stopStreamingCommand, (error, stdout, stderr));
+    exec(stopStreamingCommand, (error, stdout, stderr)=> {
+        if (error) {  
+            return;
+        }
+    });
 
 };
 

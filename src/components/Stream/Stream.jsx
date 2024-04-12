@@ -25,6 +25,10 @@ const Stream = () => {
             .catch((error) => {
                 console.error("Error", error);
             });
+
+            setTimeout(() => {
+                console.log("delayed")
+            }, 2000); 
             
         } else {
             axios.post('/api/endStream', {
@@ -42,9 +46,7 @@ const Stream = () => {
             })
             .catch((error) => {
                 console.error("Error", error);
-            }).finally(() => {
-                setIsLoadingStream(false);
-            });
+            })
         }
     }
 
