@@ -31,6 +31,7 @@ const Stream = () => {
             }, 2000); 
             
         } else {
+            setStream(!stream);
             axios.post('/api/endStream', {
                 stream: !stream
             }, {
@@ -41,7 +42,7 @@ const Stream = () => {
             .then((response) => {
                 console.log("Success:", response.data);
                 if (response.data.result) {
-                    setStream(!stream);
+                    
                 }
             })
             .catch((error) => {
