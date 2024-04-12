@@ -68,16 +68,24 @@ const Data = () => {
             </thead>
             <tbody>
               {loraData?.flatMap((devices, index) => (
-                devices.map((device, subIndex) => (
-                  <tr className={styles.row} key={device.id} style={{ backgroundColor: (index + subIndex) % 2 === 0 ? '#365E82' : '#2C5274' }}>
-                    <td className={styles.id}>{device.id}</td>
-                    <td className={styles.timestamp}>{device.timestamp}</td>
-                    <td className={styles.temperature}>{device.temperature}</td>
-                    <td className={styles.humidity}>{device.humidity}</td>
-                    <td className={styles.lightIntensity}>{device.lightIntensity}</td>
-                  </tr>
-                ))
+                devices.map((device, subIndex) => {
+                  // Convert timestamp to Date object
+                  const dateTime = new Date(device.timestamp);
+                  // Format date and time
+                  const formattedDateTime = `${dateTime.toLocaleDateString()} ${dateTime.toLocaleTimeString()}`;
+
+                  return (
+                    <tr className={styles.row} key={device.id} style={{ backgroundColor: (index + subIndex) % 2 === 0 ? '#365E82' : '#2C5274' }}>
+                      <td className={styles.id}>{device.id}</td>
+                      <td className={styles.timestamp}>{formattedDateTime}</td>
+                      <td className={styles.temperature}>{device.temperature}</td>
+                      <td className={styles.humidity}>{device.humidity}</td>
+                      <td className={styles.lightIntensity}>{device.lightIntensity}</td>
+                    </tr>
+                  );
+                })
               ))}
+
             </tbody>
           </table>
         </div>
