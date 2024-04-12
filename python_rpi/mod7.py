@@ -39,12 +39,19 @@ class LoRaRcvCont(LoRa):
         self.clear_irq_flags(RxDone=1)
         payload = self.read_payload(nocheck=True)
         data = bytes(payload).decode("utf-8", 'ignore')
+        
         node_id = data[0:2]
         temp = data[2:7]
         humidity = data[7:12]
         light_intensity = data[12:18]
+        
+        if node_id.isdigit():
+            print("Node_ID:", node_id)
+            print("Temperature:", temp)
+            print("Humidity:", humidity)
+            print("Light Intensity:", light_intensity)
 
-        self.update_node_data(node_id, temp, humidity, light_intensity)
+            self.update_node_data(node_id, temp, humidity, light_intensity)
 
     def update_node_data(self, node_id, temp, humidity, light_intensity):
         timestamp = str(time())
