@@ -69,8 +69,10 @@ const Data = () => {
             <tbody>
               {loraData?.flatMap((devices, index) => (
                 devices.map((device, subIndex) => {
-                  // Convert timestamp to Date object
-                  const dateTime = new Date(device.timestamp);
+                  // Convert Unix epoch time to milliseconds
+                  const unixTimestamp = device.timestamp * 1000;
+                  // Convert milliseconds to Date object
+                  const dateTime = new Date(unixTimestamp);
                   // Format date and time
                   const formattedDateTime = `${dateTime.toLocaleDateString()} ${dateTime.toLocaleTimeString()}`;
 
@@ -85,6 +87,7 @@ const Data = () => {
                   );
                 })
               ))}
+
 
             </tbody>
           </table>
