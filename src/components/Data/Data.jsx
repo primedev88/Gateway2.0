@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import styles from './Data.module.css';
 import { FiDownload } from "react-icons/fi";
 import '@fontsource/inter'; // Import Inter font
-// import data from './lora.json'; // Assuming lora.json is in the same directory
+
 import * as XLSX from 'xlsx';
 import axios from 'axios';
 
@@ -47,7 +47,7 @@ const Data = () => {
   }, 3000)
 
   const exportToExcel = () => {
-    const worksheet = XLSX.utils.json_to_sheet(data.devices);
+    const worksheet = XLSX.utils.json_to_sheet(loraData.flatMap(devices => devices));
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Data');
     XLSX.writeFile(workbook, 'data.xlsx');
