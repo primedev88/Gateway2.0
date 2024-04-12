@@ -69,7 +69,7 @@ class LoRaRcvCont(LoRa):
             del self.node_data[node_id]
 
     def send_udp_data(self):
-        devices = [{"node_id": node_id, **data} for node_id, data in self.node_data.items()]
+        devices = [{"id": node_id, **data} for node_id, data in self.node_data.items()]
         data_to_send = {"devices": devices}
         json_data = json.dumps(data_to_send).encode('utf-8')
         sock.sendto(json_data, (UDP_IP, UDP_PORT))

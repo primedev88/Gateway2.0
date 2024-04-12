@@ -32,19 +32,19 @@ const Data = () => {
 
   useInterval(() => {
     axios.get('/api/getLoraDevices')
-    .then(response=>{
-      setLoraData(prevEntries => {
-        const updatedEntries = [response.data.devices, ...prevEntries.slice(0, 24)]; // Keep maximum 25 entries
-        console.log("16 ",updatedEntries)
-        return updatedEntries;
+      .then(response => {
+        setLoraData(prevEntries => {
+          const updatedEntries = [response.data.devices, ...prevEntries.slice(0, 24)]; // Keep maximum 25 entries
+          console.log("16 ", updatedEntries)
+          return updatedEntries;
+        });
+
+        console.log(response.data.devices);
+      })
+      .catch(error => {
+        console.error('Error fetching Internet status: ', error);
       });
-      
-      console.log(response.data.devices);
-    })
-    .catch(error => {
-      console.error('Error fetching Internet status: ', error);
-    });
-  },3000)
+  }, 3000)
 
   const exportToExcel = () => {
     const worksheet = XLSX.utils.json_to_sheet(data.devices);
@@ -67,14 +67,16 @@ const Data = () => {
               </tr>
             </thead>
             <tbody>
-              {loraData?.map((device, index) => (
-                <tr className={styles.row} key={device.id} style={{ backgroundColor: index % 2 == 0 ? '#365E82' : '#2C5274' }}>
-                  <td className={styles.id}>{device.id}</td>
-                  <td className={styles.timestamp}>{device.timestamp}</td>
-                  <td className={styles.temperature}>{device.temperature}</td>
-                  <td className={styles.humidity}>{device.humidity}</td>
-                  <td className={styles.lightIntensity}>{device.lightIntensity}</td>
-                </tr>
+              {loraData?.flatMap((devices, index) => (
+                devices.map((device, subIndex) => (
+                  <tr className={styles.row} key={device.id} style={{ backgroundColor: (index + subIndex) % 2 === 0 ? '#365E82' : '#2C5274' }}>
+                    <td className={styles.id}>{device.id}</td>
+                    <td className={styles.timestamp}>{device.timestamp}</td>
+                    <td className={styles.temperature}>{device.temperature}</td>
+                    <td className={styles.humidity}>{device.humidity}</td>
+                    <td className={styles.lightIntensity}>{device.lightIntensity}</td>
+                  </tr>
+                ))
               ))}
             </tbody>
           </table>
