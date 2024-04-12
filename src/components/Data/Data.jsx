@@ -47,11 +47,26 @@ const Data = () => {
   }, 3000)
 
   const exportToExcel = () => {
-    const worksheet = XLSX.utils.json_to_sheet(loraData.flatMap(devices => devices));
+    // Convert timestamps to formatted date-time strings
+    const formattedData = loraData.flatMap(devices => devices.map(device => ({
+      id: device.id,
+      timestamp: new Date(device.timestamp * 1000).toLocaleString(), // Convert timestamp to local date-time string
+      temperature: device.temperature,
+      humidity: device.humidity,
+      lightIntensity: device.lightIntensity
+    })));
+  
+    // Convert the formatted data to an Excel sheet
+    const worksheet = XLSX.utils.json_to_sheet(formattedData);
+  
+    // Create a new workbook and add the worksheet
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Data');
+  
+    // Save the workbook as an Excel file
     XLSX.writeFile(workbook, 'data.xlsx');
   };
+  
   return (
     <div className={styles.data}>
       {loraData?.length > 0 ? (
