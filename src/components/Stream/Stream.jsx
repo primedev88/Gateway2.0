@@ -8,7 +8,10 @@ const Stream = () => {
    
     const handleStream = () => {
         if (!stream) {
-            
+            setTimeout(() => {
+                console.log("delayed")
+                setStream(true);
+            }, 500); 
             axios.post('/api/startStream', {
                 stream: true
             }, {
@@ -26,12 +29,14 @@ const Stream = () => {
                 console.error("Error", error);
             });
 
-            setTimeout(() => {
-                console.log("delayed")
-            }, 2000); 
-            setStream(true);
+            
+            
             
         } else {
+            setTimeout(() => {
+                console.log("delayed")
+                setStream(false);
+            }, 50); 
             axios.post('/api/endStream', {
                 stream: !stream
             }, {
@@ -48,10 +53,7 @@ const Stream = () => {
             .catch((error) => {
                 console.error("Error", error);
             })
-            setTimeout(() => {
-                console.log("delayed")
-            }, 2000); 
-            setStream(false);
+            
         }
     }
 
@@ -63,7 +65,7 @@ const Stream = () => {
                 )}
             </div>
             <div className={styles.streamWindow}>
-                {true && (
+                {stream && (
                     <img style={{display:'block',margin:'auto'}} src={`http://localhost:8084/?action=stream`} width="440" height="250"/>
                 )}
             </div>
