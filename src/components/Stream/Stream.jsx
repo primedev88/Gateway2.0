@@ -1,10 +1,26 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './Stream.module.css'
 import axios from 'axios';
 
 const Stream = () => {
     const [stream, setStream] = useState(false);
     const [isLoadingStream, setIsLoadingStream] = useState(false);
+
+    useEffect(() => {
+        // Check if localStorage is available before using it
+        if (typeof window !== 'undefined') {
+          const storedStream = sessionStorage.getItem('stream');
+          setStream(storedStream ? JSON.parse(storedStream) : false);
+        }
+    }, []);
+    
+    useEffect(() => {
+    // Check if localStorage is available before using it
+    if (typeof window !== 'undefined') {
+        sessionStorage.setItem('stream', JSON.stringify(stream));
+    }
+    }, [stream]);
+    
    
     const handleStream = () => {
         if (!stream) {

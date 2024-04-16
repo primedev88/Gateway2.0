@@ -22,8 +22,8 @@ function handleLoraDevices(req, res) {
     // Handle errors
     client.on('error', (err) => {
         console.error('Error receiving message from data dump application:', err);
-        res.statusCode = 500;
-        res.end('Error receiving message from data dump application');
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify({ devices: [] }));
     });
 
     // Bind the socket to listen for messages

@@ -36,8 +36,34 @@ const Navbar = () => {
   const [isLoadingToggle,setIsLoadingToggle] = useState(false);
   const [isHotspotOn, setIsHotspotOn] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
-  const [isConnected,setIsConnected] = useState(false);
+  const [isConnected, setIsConnected] = useState(false);
   const ip = "http://localhost:6020";
+
+  
+  useEffect(() => {
+    // Check if localStorage is available before using it
+    if (typeof window !== 'undefined') {
+      const storedIsHotspotOn = sessionStorage.getItem('isHotspotOn');
+      setIsHotspotOn(storedIsHotspotOn ? JSON.parse(storedIsHotspotOn) : false);
+
+      const storedIsConnected = sessionStorage.getItem('isConnected');
+      setIsConnected(storedIsConnected ? JSON.parse(storedIsConnected) : false);
+    }
+  }, []);
+
+  useEffect(() => {
+    // Check if localStorage is available before using it
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('isHotspotOn', JSON.stringify(isHotspotOn));
+    }
+  }, [isHotspotOn]);
+
+  useEffect(() => {
+    // Check if localStorage is available before using it
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('isConnected', JSON.stringify(isConnected));
+    }
+  }, [isConnected]);
 
   const openModal = () => {
     setModalOpen(true);

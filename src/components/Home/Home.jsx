@@ -26,8 +26,33 @@ const useInterval = (callback, delay) => {
 }
 
 const Home = () => {
-  const [wifiStatus, setWifiStatus] = useState([]);
-  const [loraStatus, setLoraStatus] = useState([]);
+  const [wifiStatus, setWifiStatus] = useState({ devices: [] });
+  const [loraStatus, setLoraStatus] = useState({ devices: [] });
+
+  useEffect(() => {
+    // Check if localStorage is available before using it
+    if (typeof window !== 'undefined') {
+      const storedWifi = sessionStorage.getItem('wifiStatus');
+      setWifiStatus(storedWifi ? JSON.parse(storedWifi) : { devices: [] });
+
+      const storedLora = sessionStorage.getItem('loraStatus');
+      setLoraStatus(storedLora ? JSON.parse(storedLora) : { devices: [] });
+    }
+  }, []);
+
+  useEffect(() => {
+    // Check if localStorage is available before using it
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('wifiStatus', JSON.stringify(wifiStatus));
+    }
+  }, [wifiStatus]);
+
+  useEffect(() => {
+    // Check if localStorage is available before using it
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('loraStatus', JSON.stringify(loraStatus));
+    }
+  }, [loraStatus]);
 
   useInterval(() => {
     axios.get('/api/getWifiDevices')

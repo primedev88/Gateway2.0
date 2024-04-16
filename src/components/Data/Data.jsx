@@ -30,6 +30,21 @@ const useInterval = (callback, delay) => {
 const Data = () => {
   const [loraData, setLoraData] = useState([]);
 
+  useEffect(() => {
+    // Check if localStorage is available before using it
+    if (typeof window !== 'undefined') {
+      const storedData = sessionStorage.getItem('loraData');
+      setLoraData(storedData ? JSON.parse(storedData) : []);
+    }
+  }, []);
+
+  useEffect(() => {
+    // Check if localStorage is available before using it
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('loraData', JSON.stringify(loraData));
+    }
+  }, [loraData]);
+
   useInterval(() => {
     axios.get('/api/getLoraDevices')
       .then(response => {
@@ -42,7 +57,7 @@ const Data = () => {
         console.log(response.data.devices);
       })
       .catch(error => {
-        console.error('Error fetching Internet status: ', error);
+        console.error('Error fetching Lora Data: ', error);
       });
   }, 3000)
 
@@ -69,7 +84,7 @@ const Data = () => {
   
   return (
     <div className={styles.data}>
-      {loraData?.length > 0 ? (
+      {loraData?.flat().length > 0 ? (
         <div className={styles.tablecontainer}>
           <table className={styles.table}>
             <thead className={styles.head}>

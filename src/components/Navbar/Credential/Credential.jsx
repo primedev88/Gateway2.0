@@ -9,6 +9,7 @@ function Credential(props) {
   const [ssid, setSSID] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(true);
+  const [error, setError] = useState('');
   
   const togglePasswordVisibility = () =>{
     setShowPassword(!showPassword);
@@ -22,8 +23,34 @@ function Credential(props) {
   };
 
   const handleFormSubmit = () => {
+    let errorMessage = '';
+
+    // Password length check
+    if (password.length < 8) {
+      errorMessage = "Password must be greater than 8 characters";
+    }
+
+    // SSID validation
+    if (ssid.trim() === "") {
+      errorMessage = "SSID cannot be empty";
+    }
+
+    // SSID should not begin with a digit
+    if (/^\d/.test(ssid)) {
+      errorMessage = "SSID cannot begin with a digit";
+    }
+
+    // If any error occurred, display it and return
+    if (errorMessage) {
+      setError(errorMessage);
+      return;
+    }
+
+    // All checks passed, clear any previous error and proceed with form submission
+    setError('');
     handleSubmit(ssid, password);
   };
+  
   return (
     <div className={styles.modal}>
       <div className={styles.hotspotSettings}>
@@ -69,6 +96,7 @@ function Credential(props) {
         <div className={styles.Submit} onClick={handleFormSubmit} disabled={isLoading.toString()}>
           {isLoading ? <div className={styles.loader} /> : 'Submit'}
         </div>
+        {error && <div className={styles.error}>! {error}</div>}
       </div>
     </div>
   );
