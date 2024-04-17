@@ -5,6 +5,7 @@ import axios from 'axios';
 const Stream = () => {
     const [stream, setStream] = useState(false);
     const [isLoadingStream, setIsLoadingStream] = useState(false);
+    const [streamKey, setStreamKey] = useState(Date.now());
 
     useEffect(() => {
         // Check if localStorage is available before using it
@@ -45,7 +46,7 @@ const Stream = () => {
                 console.error("Error", error);
             });
 
-            
+            setStreamKey(Date.now());
             
             
         } else {
@@ -82,7 +83,7 @@ const Stream = () => {
             </div>
             <div className={styles.streamWindow}>
                 {stream && (
-                    <img style={{display:'block',margin:'auto'}} src={`http://localhost:8084/?action=stream`} width="440" height="250"/>
+                    <img style={{display:'block',margin:'auto'}} src={`http://localhost:8084/?action=stream`} width="440" height="250" key={streamKey}/>
                 )}
             </div>
         </div>
