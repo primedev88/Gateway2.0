@@ -5,8 +5,7 @@ import axios from 'axios';
 const Stream = () => {
     const [stream, setStream] = useState(false);
     const [isLoadingStream, setIsLoadingStream] = useState(false);
-    const [streamKey, setStreamKey] = useState(Date.now());
-
+    
     useEffect(() => {
         // Check if localStorage is available before using it
         if (typeof window !== 'undefined') {
@@ -45,10 +44,6 @@ const Stream = () => {
             .catch((error) => {
                 console.error("Error", error);
             });
-
-            setStreamKey(Date.now());
-            
-            
         } else {
             setTimeout(() => {
                 console.log("delayed")
@@ -83,7 +78,7 @@ const Stream = () => {
             </div>
             <div className={styles.streamWindow}>
                 {stream && (
-                    <img style={{display:'block',margin:'auto'}} src={`http://localhost:8084/?action=stream`} width="440" height="250" key={streamKey}/>
+                    <img style={{display:'block',margin:'auto'}} src={`http://localhost:8084/?action=stream`} width="440" height="250" key={Date.now()}/>
                 )}
             </div>
         </div>
