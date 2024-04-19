@@ -5,6 +5,7 @@ const { handleToggle } = require('../services/toggle')
 const { handleLoraDevices } = require('../services/getLora')
 const { handleStartStream } =require('../services/startStream')
 const { handleEndStream } =require('../services/endStream')
+const {handleStartLora} = require('../services/startLora')
 
 
 const getNetStatus = (req,res) => {
@@ -33,6 +34,10 @@ const startStream = (req,res) => {
 const endStream = (req,res) => {
     return handleEndStream(req,res);
 }
+
+const startLora = (req,res) => {
+    return handleStartLora(req,res);
+}
 module.exports = {
     getNetStatus,
     getWifiDevices,
@@ -40,5 +45,6 @@ module.exports = {
     updateCredentials,
     toggleHotspot,
     startStream,
-    endStream
+    endStream,
+    startLora
 }

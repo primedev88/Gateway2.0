@@ -4,7 +4,7 @@
     justify-content: space-between;
 }
  .flexGrow{
-    
+    margin-left: 6vw;
     display: flex;
     flex-direction: row;
  }
@@ -43,7 +43,7 @@
     height: 100%;
 }
 .setting{
-    width: 12vw;
+    width: 19vw;
     padding: 2vh;
     display: flex;
     flex-direction: row;
@@ -51,6 +51,17 @@
     align-items: center;
 }
 
+.lora{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 0vh 2vh;
+    height: 8vh;
+    width: 8vh;
+    border-radius: 6px;
+    background-color: #2C5274;
+}
 .hotspot{
     display: flex;
     flex-direction: row;

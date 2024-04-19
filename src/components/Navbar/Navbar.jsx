@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import styles from './Navbar.module.css'
 import { MdOutlinePhotoCamera,MdOutlineSignalCellularAlt, MdOutlineSpaceDashboard, MdOutlineSettings } from "react-icons/md";
+import { BsDeviceSsd ,BsFillDeviceSsdFill} from "react-icons/bs";
 import Credential from "./Credential/Credential.jsx";
 import { LuDroplets } from "react-icons/lu";
 import { RiSignalTowerFill } from "react-icons/ri";
@@ -37,6 +38,7 @@ const Navbar = () => {
   const [isHotspotOn, setIsHotspotOn] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
+  const [isLora, setLora] = useState(false);
   const ip = "http://localhost:6020";
 
   
@@ -135,6 +137,24 @@ const Navbar = () => {
     });
   };
 
+  const handleLora = ()=>{
+    
+    axios.post(`${ip}/api/start-lora`,{
+      isLora: !isLora
+    },{
+      headers: {
+        "Content-Type": "application/json",
+      }
+    })
+    // .then((response)=>{
+    //   console.log("Success:", response.data);
+    // })
+    // .catch((error) => {
+    //   console.error("Error", error);
+    // })
+    setLora(!isLora);
+  }
+
   return (
     <>
     <nav className={styles.navbar}>
@@ -182,6 +202,9 @@ const Navbar = () => {
         </ul>
       </div>
       <div className={styles.setting}>
+        <div className={styles.lora} onClick={handleLora}>
+          <BsFillDeviceSsdFill style={{ fontSize: '23' ,color:isLora? '#10FFD4':'#D6F8FF'}}       />
+        </div>
         <div className={styles.hotspot} onClick={toggleHotspot} disable={isLoadingToggle.toString()}>
           {isLoadingToggle? <div className={styles.loader} /> :
           <RiSignalTowerFill style={{ fontSize: '23' ,color:isHotspotOn? '#10FFD4':'#D6F8FF'}} />

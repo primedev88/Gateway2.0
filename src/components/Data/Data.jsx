@@ -125,13 +125,15 @@ const Data = () => {
       ) : (
         <div className={styles.table}>No Data available</div>
       )}
-
-      <div className={styles.export} onClick={exportToExcel}>
-        <p></p>
-        <div className={styles.button}>
-          <FiDownload style={{ fontSize: '22' }} />
-        </div>
-      </div>
+      {
+        loraData?.flat().length>0  && ( <div className={styles.export} onClick={exportToExcel}>
+          <p></p>
+          <div className={styles.button}>
+            <FiDownload style={{ fontSize: '22' }} />
+          </div>
+        </div>)
+      }
+     
     </div>
   );
 }
