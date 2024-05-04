@@ -50,6 +50,9 @@ const Navbar = () => {
 
       const storedIsConnected = sessionStorage.getItem('isConnected');
       setIsConnected(storedIsConnected ? JSON.parse(storedIsConnected) : false);
+
+      const storedIsLora = sessionStorage.getItem('isLora');
+      setLora(storedIsLora? JSON.parse(storedIsLora) : false);
     }
   }, []);
 
@@ -66,6 +69,13 @@ const Navbar = () => {
       sessionStorage.setItem('isConnected', JSON.stringify(isConnected));
     }
   }, [isConnected]);
+
+  useEffect(() => {
+    // Check if localStorage is available before using it
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('isLora', JSON.stringify(isLora));
+    }
+  }, [isLora]);
 
   const openModal = () => {
     setModalOpen(true);
