@@ -5,7 +5,7 @@
   "main":"index.js",
   "scripts": {
     "dev": "node server/server.js",
-    "build": "next build",
+    "build":"next build && next export",
     "start": "electron .",
     "lint": "next lint"
   },
@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.0.1",
-    "electron": "^29.3.0",
+    
     "eslint": "^8",
     "eslint-config-next": "14.1.4",
     "postcss": "^8"
